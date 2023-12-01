@@ -1,19 +1,15 @@
 import logo from "../assets/logo.svg"
 import { ArrowLeft, Bell, Menu, Mic, Search, Upload, User } from 'lucide-react'
-import Button from "../components/Button"
+import Button from "./Button"
 import { useState } from "react"
+import React from "react"
+import { useSidebarContext } from "../context/SidebarContext"
 const Header = () => {
     const [showFullWidthSearch,setShowFullWidthSeacrch] = useState(false)
+    const {toggle} = useSidebarContext()
   return (
     <div className=' flex gap-10 lg:gap-20 justify-between pt-2 mb-6 mx-4'>
-       <div className= {`gap-4 flex-shrink-0 items-center ${showFullWidthSearch ? "hidden" :"flex"}`}>
-        <Button variant="ghost" size="icon" className="mr-">
-            <Menu/>
-        </Button>
-        <a href='/'>
-            <img src={logo} className='h-6'/>
-        </a>
-       </div>
+       <HeaderElement hidden={showFullWidthSearch}/>
        <form className={`gap-4 flex-grow justify-center ${showFullWidthSearch ? "flex" :"hidden md:flex  "}`}>
        {showFullWidthSearch &&  <Button onClick={()=>setShowFullWidthSeacrch(false)} type="button" size="icon" variant="default" className="flex-shrink-0">
             <ArrowLeft/>
@@ -49,6 +45,22 @@ const Header = () => {
        </div> 
     </div>
   )
+}
+
+type HeaderElementProps = {
+    hidden? :Boolean
+}
+
+export function HeaderElement({hidden=false}:HeaderElementProps){
+    const {toggle} = useSidebarContext()
+    return <div className= {`gap-1 flex-shrink-0 items-center justify-between top-0 ${hidden? "hidden" :"flex"}`}>
+    <Button onClick={toggle} variant="ghost" size="icon" >
+        <Menu/>
+    </Button>
+    <a href='/'>
+        <img src={logo} className='h-6'/>
+    </a>
+   </div>
 }
 
 export default Header
